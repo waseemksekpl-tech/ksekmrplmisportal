@@ -1,0 +1,242 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Internal company user with role and department assignment",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email", "description": "Company email address" },
+        "displayName": { "type": "string", "description": "Full name of employee" },
+        "role": { "type": "string", "enum": ["super_admin", "mis_admin", "manager", "employee"], "description": "Access role" },
+        "department": { "type": "string", "description": "Department name (MIS, Sales, Inventory, Logistics, Finance, Management)" },
+        "phone": { "type": "string", "description": "Contact phone number" },
+        "status": { "type": "string", "enum": ["active", "disabled"], "description": "Account status" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "displayName", "role", "department", "status"]
+    },
+    "Report": {
+      "title": "MIS Report",
+      "description": "Published operational and business MIS report",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "reportType": { "type": "string", "enum": ["daily_sales", "monthly_sales", "stock_inventory", "dispatch_logistics", "outstanding_tally", "partner_performance", "gst_compliance", "operational"] },
+        "description": { "type": "string" },
+        "reportingPeriod": { "type": "string" },
+        "department": { "type": "string" },
+        "accessLevel": { "type": "string", "enum": ["all", "managers_and_up", "mis_only", "admin_only"] },
+        "status": { "type": "string", "enum": ["published", "draft", "archived"] },
+        "fileAttachment": { "type": "string" },
+        "fileName": { "type": "string" },
+        "fileSize": { "type": "string" },
+        "uploadedBy": { "type": "string" },
+        "authorUid": { "type": "string" },
+        "publishedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "reportType", "reportingPeriod", "department", "accessLevel", "status", "uploadedBy", "authorUid"]
+    },
+    "Announcement": {
+      "title": "Company Announcement",
+      "description": "Internal communication bulletin for employees and managers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "priority": { "type": "string", "enum": ["normal", "important", "urgent"] },
+        "targetAudience": { "type": "string", "description": "All, Sales, Operations, Management, or Logistics" },
+        "authorName": { "type": "string" },
+        "authorUid": { "type": "string" },
+        "isPinned": { "type": "boolean" },
+        "expiryDate": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "priority", "targetAudience", "authorName", "authorUid", "createdAt"]
+    },
+    "Document": {
+      "title": "Company Document",
+      "description": "Archived official document, manual, or report",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string", "enum": ["mis_reports", "hr_documents", "finance", "operations", "sales", "inventory", "company_documents", "other"] },
+        "fileType": { "type": "string" },
+        "fileSize": { "type": "string" },
+        "url": { "type": "string" },
+        "accessPermission": { "type": "string", "enum": ["all", "managers_and_up", "admin_only"] },
+        "uploadedBy": { "type": "string" },
+        "authorUid": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "category", "fileType", "accessPermission", "uploadedBy", "authorUid", "createdAt"]
+    },
+    "SaleRecord": {
+      "title": "Sales Record",
+      "description": "Distributor invoice sale item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "invoiceNumber": { "type": "string" },
+        "date": { "type": "string" },
+        "partnerName": { "type": "string" },
+        "partnerCode": { "type": "string" },
+        "productName": { "type": "string" },
+        "sku": { "type": "string" },
+        "category": { "type": "string" },
+        "quantity": { "type": "number" },
+        "unitPrice": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "salesperson": { "type": "string" },
+        "region": { "type": "string" },
+        "paymentStatus": { "type": "string", "enum": ["Paid", "Pending", "Overdue"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["invoiceNumber", "date", "partnerName", "productName", "quantity", "unitPrice", "totalAmount"]
+    },
+    "InventoryItem": {
+      "title": "Inventory Stock Item",
+      "description": "Apple device or accessory stock balance",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sku": { "type": "string" },
+        "productName": { "type": "string" },
+        "category": { "type": "string", "enum": ["iPhone", "iPad", "Mac", "Watch", "AirPods", "Accessories", "AppleCare"] },
+        "quantity": { "type": "number" },
+        "minReorderLevel": { "type": "number" },
+        "unitCost": { "type": "number" },
+        "warehouseLocation": { "type": "string" },
+        "status": { "type": "string", "enum": ["In Stock", "Low Stock", "Out of Stock"] },
+        "lastAuditedAt": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["sku", "productName", "category", "quantity", "warehouseLocation", "status"]
+    },
+    "DispatchRecord": {
+      "title": "Dispatch Logistics Record",
+      "description": "Shipment dispatch to partner/dealer",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "dispatchId": { "type": "string" },
+        "date": { "type": "string" },
+        "partnerName": { "type": "string" },
+        "destination": { "type": "string" },
+        "itemsDescription": { "type": "string" },
+        "quantity": { "type": "number" },
+        "status": { "type": "string", "enum": ["Pending", "Processing", "Dispatched", "Delivered", "Cancelled"] },
+        "carrier": { "type": "string" },
+        "trackingNumber": { "type": "string" },
+        "expectedDelivery": { "type": "string" },
+        "remarks": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["dispatchId", "date", "partnerName", "destination", "quantity", "status"]
+    },
+    "Partner": {
+      "title": "Partner Dealer Record",
+      "description": "Authorized partner/retailer profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "partnerName": { "type": "string" },
+        "partnerCode": { "type": "string" },
+        "gstNumber": { "type": "string" },
+        "contactPerson": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "assignedSalesperson": { "type": "string" },
+        "creditLimit": { "type": "number" },
+        "outstandingAmount": { "type": "number" },
+        "paymentTerms": { "type": "string" },
+        "status": { "type": "string", "enum": ["Active", "On Hold", "Review Required"] },
+        "lastTransactionDate": { "type": "string" }
+      },
+      "required": ["partnerName", "partnerCode", "gstNumber", "city", "status"]
+    },
+    "ActivityLog": {
+      "title": "Audit Activity Log",
+      "description": "System trace log for security and accountability",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "userName": { "type": "string" },
+        "userRole": { "type": "string" },
+        "action": { "type": "string" },
+        "module": { "type": "string" },
+        "details": { "type": "string" },
+        "recordId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "userEmail", "action", "module", "timestamp"]
+    },
+    "Notification": {
+      "title": "User Notification",
+      "description": "Targeted alert or system notification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "recipientUid": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "link": { "type": "string" },
+        "type": { "type": "string", "enum": ["report", "announcement", "stock", "dispatch", "system"] },
+        "isRead": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["recipientUid", "title", "message", "type", "isRead", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile with role assignment"
+    },
+    "/reports/{reportId}": {
+      "schema": "Report",
+      "description": "Published MIS reports"
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Company announcements bulletin"
+    },
+    "/documents/{documentId}": {
+      "schema": "Document",
+      "description": "Company document repository"
+    },
+    "/sales/{saleId}": {
+      "schema": "SaleRecord",
+      "description": "Sales invoice records"
+    },
+    "/inventory/{itemId}": {
+      "schema": "InventoryItem",
+      "description": "Stock inventory items"
+    },
+    "/dispatches/{dispatchId}": {
+      "schema": "DispatchRecord",
+      "description": "Logistics dispatch records"
+    },
+    "/partners/{partnerId}": {
+      "schema": "Partner",
+      "description": "Partner dealer profiles and credit info"
+    },
+    "/activityLogs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "Audit trail log records"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "User notifications"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "KS ENTERPRISES (KMR) MIS Portal",
+  "description": "Private Internal MIS & Business Operations Dashboard for KS ENTERPRISES (KMR) PRIVATE LIMITED - Apple Authorized Regional Distributor",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
